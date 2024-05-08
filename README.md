@@ -29,3 +29,17 @@ after running ```npm i -D parcel``` this command we will see package-lock.json f
     2. Dev Build
     3. Local Server
     4. File Watcher Algorithm written in C++
+
+## Episode :-
+1. JSX 
+```
+// React.createElement => ReachElement is JS-object => HTMLElement(render)
+const heading1 = React.createElement("h1", {id: "heading"}, "Heading 1");
+
+// jsx => (using bable) React.createElement => ReachElement is JS-object => HTMLElement(render)
+const jsxHeading = <h1>Heading from JSX!</h1>
+
+// both jsx and reactElement are nothing bu js=-object 
+```
+2. Functional component
+3. Component composition - call component inside component
