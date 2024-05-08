@@ -30,7 +30,7 @@ after running ```npm i -D parcel``` this command we will see package-lock.json f
     3. Local Server
     4. File Watcher Algorithm written in C++
 
-## Episode :-
+## Episode 3 :-
 1. JSX 
 ```
 // React.createElement => ReachElement is JS-object => HTMLElement(render)
