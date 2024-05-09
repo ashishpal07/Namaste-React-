@@ -39,7 +39,7 @@ const heading1 = React.createElement("h1", {id: "heading"}, "Heading 1");
 // jsx => (using bable) React.createElement => ReachElement is JS-object => HTMLElement(render)
 const jsxHeading = <h1>Heading from JSX!</h1>
 
-// both jsx and reactElement are nothing bu js=-object 
+// both jsx and reactElement are nothing bu js-object 
 ```
 2. Functional component
 3. Component composition - call component inside component
@@ -57,3 +57,35 @@ Make your card dynamic(pass in props)
 Props - passing arguments to a function - Use Destructuring & Spread operator
 Render your cards with dynamic data of restaurants
 Use Array.map to render all the restaurants
+
+## Episode 5 :-
+Types of export/ inport
+
+1. named export/import
+    export const component;
+    import {component} from "path"
+
+2. default export/import
+    export default component;
+    import component from "path"
+    in 1 file you can do only one default export
+
+3. React Hooks
+    - Nothing but normal JS utility function
+    - 2 very important react hooks are :
+        - useState() - whenever a state veriable update react re-renders the component
+        - userEffect()
+
+4. Reconcilliation (React Fiber) - [Why react is fast ?]
+    virtual DOM - is the representation of Actual DOM & it is normal JS-Object
+    Actual DOM - 
+        <div>
+            <p>
+                <span>
+                    HI
+                </span>
+            </p>
+        </div>
+
+    Diff-Algorith - this finds the diffrerence between 2 virtual DOM (current and previous)
+    are render(update) the UI.
