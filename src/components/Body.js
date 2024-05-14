@@ -1,12 +1,23 @@
-import RestaturantCard from "./RestaurantCard";
+import RestaturantCard, {
+  RestaurantCartWithPromoted,
+  RestaurantCartWithPromoted,
+} from "./RestaurantCard";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { SWIGGY_API } from "../utils/constants";
+import useOnlineStatus from "../utils/useOnlineStatus";
+
+import { Link } from "react-router-dom";
+// import UserContext from "../utils/UserContext";
 
 const Body = () => {
   const [restaurentList, setRestaurentList] = useState([]);
-  const [filterRestarent, setFilterRestaurent] = useState([]);
+  const [filterRestaurent, setFilterRestaurent] = useState([]);
   const [seatchText, setSearchText] = useState("");
+
+  const PromotedRestaurant = RestaurantCartWithPromoted(<RestaturantCard />);
+
+  const onlineStatus = useOnlineStatus();
 
   useEffect(() => {
     fetchData();
@@ -15,27 +26,40 @@ const Body = () => {
   const fetchData = async () => {
     const data = await fetch(SWIGGY_API);
     const jsonData = await data.json();
+    console.log("message", jsonData);
     setRestaurentList(
-      jsonData.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      jsonData.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants
     );
     setFilterRestaurent(
-      jsonData.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      jsonData.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants
     );
   };
 
-  return restaurentList.length === 0 ? (<Shimmer />) : (
+  if (!onlineStatus) {
+    return (
+      <div className="flex justify-center items-center font-bold h-[70vh]">Looking like you are offline. Please check your connection!</div>
+    );
+  }
+
+  console.log(restaurentList);
+  // debugger
+  return restaurentList.length === 0 ? (
+    <Shimmer />
+  ) : (
     <div className="body">
-      <div className="search">
+      <div className="p-3 m-2">
         <input
           type="text"
-          className="search-box"
+          className="mx-2 p-1 border-2 border-black rounded-lg"
           value={seatchText}
           onChange={(e) => {
             setSearchText(e.target.value);
           }}
         />
         <button
-          className="search-btn"
+          className="mx-2 p-1 border-2 border-black rounded-lg bg-black text-white"
           onClick={() => {
             const filterList = restaurentList.filter((res) =>
               res.info?.name?.toLowerCase().includes(seatchText.toLowerCase())
@@ -43,16 +67,34 @@ const Body = () => {
             setFilterRestaurent(filterList);
           }}
         >
-          search
+          SEARCH
+        </button>
+
+        <button
+          className="mx-2 p-1 border-2 border-amber-700 rounded-lg bg-amber-700 text-white"
+          onClick={() => {
+            const filter = filterRestaurent.filter((res) => {
+              res.data.avgRating > 4;
+            });
+            setFilterRestaurent(filter);
+          }}
+        >
+          Top Rated Restaurents
         </button>
       </div>
-      <div className="restaurant-container">
-        {filterRestarent.map((restaurant) => {
+      <div className="flex flex-wrap justify-center">
+        {filterRestaurent.map((restaurant) => {
           return (
-            <RestaturantCard
-              key={restaurant.info?.id}
-              restaurantData={restaurant.info}
-            />
+            <Link
+              key={restaurant?.info?.id}
+              to={"/restaurant/" + restaurant.info?.id}
+            >
+              {restaurant.data?.promoted ? (
+                <PromotedRestaurant restaurantData={restaurant.info} />
+              ) : (
+                <RestaturantCard restaurantData={restaurant.info} />
+              )}
+            </Link>
           );
         })}
       </div>
